@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Gotham';
+    src: url('../fonts/Gotham-Font/GothamBold.ttf') format('truetype');
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #202020; /* Set the background to black */
+    font-family: Gotham;
+}
