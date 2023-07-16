@@ -24,3 +24,6 @@ def get_top_track_matches(search_text: str, spotify_client: Spotify, n_songs: in
         top_track_matches.append(track)
     
     return top_track_matches
+
+def add_track_to_queue(track_id: str, spotify_client: Spotify) -> None:
+    spotify_client.add_to_queue(track_id)
