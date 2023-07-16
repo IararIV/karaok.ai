@@ -5,6 +5,8 @@ from dataclasses import dataclass
 class Credentials:
     client_id: str
     client_secret: str
+    redirect_uri: str
+    scope: str
 
 
 @dataclass
