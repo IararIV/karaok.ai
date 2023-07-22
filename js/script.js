@@ -2,7 +2,7 @@
 const spotifyApiBaseURL = 'https://api.spotify.com/v1';
 
 // Token (inster manually)
-const token = "BQDTR4TR3jbKknGWdFfPEYkLmz4XEutK3TB17b__OpImLzPm2atnS9TktfQTibs9k1nwJOMMh9R1AbSwmlbLoQLralJu_jksTtHu4LUT51cjQDHzTzm8LiIcoCpiqS_HRhdN8tzmYmfmh6bkaoF3FIZyFc6MVjXreI9CPKhRDbNoAK-pq4oRG-_zsmvj0Q";
+const token = "";
 
 const headers = {
   'Authorization': `Bearer ${token}`

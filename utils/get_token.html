@@ -1,0 +1,32 @@
+<!-- Run this page to get the token from the url of the redirected page -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spotify API Test</title>
+</head>
+<body>
+    <button onclick="authorizeSpotify()">Authorize with Spotify</button>
+
+    <script>
+
+        function authorizeSpotify() {
+            const CLIENT_ID = '30a1435e801a4f5884f0721a3fc36d2b';
+            const REDIRECT_URI = 'http://localhost:7777/callback';
+            const SCOPES = 'user-modify-playback-state,user-read-recently-played';
+
+            const authUrl = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=${encodeURIComponent(SCOPES)}`;
+
+            // Redirect the user to the Spotify authorization page
+            window.location.href = authUrl;
+
+            url = window.location.href;
+        }
+
+        function getAccessTokenFromUrl() {
+            const hash = window.location.hash.substr(1);
+            const params = new URLSearchParams(hash);
+            return params.get('access_token');
+        }
+    </script>
+</body>
+</html>
