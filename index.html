@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Music Search</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <script src="js/script.js"></script>
+    </head>
+    <body>
+        <div class="search-bar-container">
+            <input id="search-input" type="text" placeholder="What would you like to listen to?">
+        </div>
+        <div class="recent-tracks-container"  style="display: true">
+        </div>
+        <div class="tracks-container" style="display: none">
+            <div class="top-track-column">
+            </div>
+            <div class="all-tracks-column">
+            </div>
+        </div>
+    </body>
+</html>
+
+<script>
+    const searchInput = document.getElementById("search-input");
+    const recentContainer = document.querySelector(".recent-tracks-container");
+    const tracksContainer = document.querySelector(".tracks-container");
+
+    // Run first time to initialize with recent songs
+    handleSearch();
+
+    searchInput.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            handleSearch();
+        }
+    });
+
+    async function handleSearch() {
+        var searchText = searchInput.value;
+
+        if (searchText != "") {
+            let topTracks = await getMatchTracks(searchText);
+
+            //* TOP TRACK RESULT *//
+
+            // Get the reference to the top-track-column
+            const topTrackColumn = document.querySelector(".top-track-column");
+            topTrackColumn.innerHTML = ""; // Clear existing content
+
+            // Create the elements for the template
+            const topResultDiv = document.createElement("div");
+            topResultDiv.className = "top-result";
+
+            const topResultImage = document.createElement("img");
+            topResultImage.src = topTracks[0].image;
+            topResultImage.alt = "Top Result Image";
+
+            const topResultName = document.createElement("h2");
+            topResultName.textContent = topTracks[0].name;
+
+            const topResultArtist = document.createElement("p");
+            topResultArtist.textContent = topTracks[0].artist;
+
+            const iconOverlayDiv = document.createElement("div");
+            iconOverlayDiv.className = "icon-overlay";
+
+            const addToQueueIcon = document.createElement("img");
+            addToQueueIcon.src = "images/add_to_queue.png";
+            addToQueueIcon.alt = "Add to queue icon";
+            addToQueueIcon.className = "icon";
+            addToQueueIcon.onclick = function () {
+                addTrackToQueue(topTracks[0].uri);
+            };
+
+            // Append the elements to their respective parents
+            iconOverlayDiv.appendChild(addToQueueIcon);
+
+            topResultDiv.appendChild(topResultImage);
+            topResultDiv.appendChild(topResultName);
+            topResultDiv.appendChild(topResultArtist);
+
+            // Clear the existing content of top-track-column (if any) and add the dynamic template
+            topTrackColumn.appendChild(topResultDiv);
+            topTrackColumn.appendChild(iconOverlayDiv);
+
+
+            //* ALL TRACKS RESULTS *//
+
+            // Get the reference to the all-tracks-column
+            const allTracksColumn = document.querySelector(".all-tracks-column");
+            allTracksColumn.innerHTML = "";
+
+            // Create the elements for each track in "tracks" array
+            topTracks.forEach((track) => {
+                const rowDiv = document.createElement("div");
+                rowDiv.className = "row";
+
+                const imageColumnDiv = document.createElement("div");
+                imageColumnDiv.className = "row-image";
+
+                const trackImage = document.createElement("img");
+                trackImage.src = track.image;
+                trackImage.alt = "Track Image";
+
+                const infoColumnDiv = document.createElement("div");
+                infoColumnDiv.className = "row-info";
+
+                const trackName = document.createElement("h3");
+                trackName.textContent = track.name;
+
+                const trackArtist = document.createElement("p");
+                trackArtist.textContent = track.artist;
+
+                const iconOverlayDiv = document.createElement("div");
+                iconOverlayDiv.className = "icon-overlay";
+
+                const addToQueueIcon = document.createElement("img");
+                addToQueueIcon.src = "images/add_to_queue.png";
+                addToQueueIcon.alt = "Add to queue icon";
+                addToQueueIcon.className = "icon";
+                addToQueueIcon.onclick = function () {
+                    addTrackToQueue(track.uri);
+                };
+
+                // Append the elements to their respective parents
+                iconOverlayDiv.appendChild(addToQueueIcon);
+
+                imageColumnDiv.appendChild(trackImage);
+                infoColumnDiv.appendChild(trackName);
+                infoColumnDiv.appendChild(trackArtist);
+
+                rowDiv.appendChild(imageColumnDiv);
+                rowDiv.appendChild(infoColumnDiv);
+                rowDiv.appendChild(iconOverlayDiv);
+
+                // Add the dynamic template for each track to the "songs-container"
+                allTracksColumn.appendChild(rowDiv);
+            });
+            
+            recentContainer.style.display = "none";
+            tracksContainer.style.display = "";
+        } else {
+            let recentTracks = await getRecentTracks();
+
+            //* RECENT TRACKS RESULTS *//
+
+            // Get the reference to the recent-tracks-container
+            const recentTracksColumn = document.querySelector(".recent-tracks-container");
+            recentTracksColumn.innerHTML = "";
+
+            // Create the elements for each track in "tracks" array
+            recentTracks.forEach((track) => {
+                const columnDiv = document.createElement("div"); // Changed the class name to "column"
+                columnDiv.className = "column"; // Changed the class name to "column"
+          
+                const imageColumnDiv = document.createElement("div");
+                imageColumnDiv.className = "column-image"; // Changed the class name to "column-image"
+          
+                const trackImage = document.createElement("img");
+                trackImage.src = track.image;
+                trackImage.alt = "Track Image";
+          
+                const infoColumnDiv = document.createElement("div");
+                infoColumnDiv.className = "column-info"; // Changed the class name to "column-info"
+          
+                const trackName = document.createElement("h3");
+                trackName.textContent = track.name;
+          
+                const trackArtist = document.createElement("p");
+                trackArtist.textContent = track.artist;
+          
+                const iconOverlayDiv = document.createElement("div");
+                iconOverlayDiv.className = "icon-overlay";
+          
+                const addToQueueIcon = document.createElement("img");
+                addToQueueIcon.src = "images/add_to_queue.png";
+                addToQueueIcon.alt = "Add to queue icon";
+                addToQueueIcon.className = "icon";
+                addToQueueIcon.onclick = function () {
+                  addTrackToQueue(track.uri);
+                };
+          
+                // Append the elements to their respective parents
+                iconOverlayDiv.appendChild(addToQueueIcon);
+          
+                imageColumnDiv.appendChild(trackImage);
+                infoColumnDiv.appendChild(trackName);
+                infoColumnDiv.appendChild(trackArtist);
+          
+                columnDiv.appendChild(imageColumnDiv);
+                columnDiv.appendChild(infoColumnDiv);
+                columnDiv.appendChild(iconOverlayDiv);
+          
+                recentTracksColumn.appendChild(columnDiv);
+            })
+
+            recentContainer.style.display = "";
+            tracksContainer.style.display = "none";
+        }
+      }
+</script>
